@@ -1,17 +1,14 @@
 from GameState import GameState
+from Agents.AgenteFinanziere import AgenteFinanziere
 
-game=GameState()
+game = GameState()
+sterling = AgenteFinanziere()
 
-
-delta=20
-
-
-for i in range(5):
-    game.show_dashboard()
-    game.aggiorna_stato(delta_budget=delta, delta_fiducia=-5, delta_scandalo=40)
-    result=game.verifica_fine_partita()
-
-    if result:
-        print(f"Game Over: {result}")
-        break
+game.show_dashboard()
+pitch = input("Inserisci il tuo pitch per la startup: ")
+print("Mr. Sterling sta valutando...")
+feedback = sterling.valuta_pitch(pitch, game)
+print("\n" + "=" * 50)
+print("Feedback di Mr. Sterling:")
+print(feedback)
 
