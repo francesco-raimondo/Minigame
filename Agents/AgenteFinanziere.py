@@ -1,7 +1,9 @@
 from openai import OpenAI
+import json
+from Tools.agente_finanziere_tools import agente_finanziere_tools
 
 class AgenteFinanziere:
-    def __init__(self, base_url="http://192.168.1.49:1234/v1", model_name="qwen/qwen3-4b-2507"):
+    def __init__(self, base_url="http://192.168.1.100:1234/v1", model_name="qwen/qwen3-4b-2507"):
         self.client = OpenAI(base_url=base_url, api_key="not-needed")
         self.model_name = model_name
         self.system_prompt = ("Sei Mr. Sterling, un membro del consiglio d'amministrazione di una startup,"
@@ -24,14 +26,31 @@ class AgenteFinanziere:
             f"Ecco la mia proposta:\n\"{pitch_utente}\""
         ) 
 
+        # Chiamata al client passando i tools importati dal file esterno
         response = self.client.chat.completions.create(
             model=self.model_name,
             messages=[
                 {"role": "system", "content": self.system_prompt},
                 {"role": "user", "content": prompt}
             ],
+            tools=agente_finanziere_tools,
+            tool_choice="required",
             temperature=0.2
-            )
-        return response.choices[0].message.content
+        )
+        # sta venendo chiamato un tool, quindi la risposta dell'agente sarà negli argomenti del tool, in questo caso in "motivazione"
+        message = response.choices[0].message
+        
+        if message.tool_calls:
+            tool_call = message.tool_calls[0]
+            name_function=tool_call.function.name
+
+            if name_function == "gestisci_decisione_board":
+                # Convertiamo gli argomenti JSON restituiti dalla LLM in un dizionario Python
+                arguments = json.loads(tool_call.function.arguments)
+                print("DEBUG : ", arguments)
+                return arguments
+
+        else:
+            print("Errore, non è stato chiamato alcun tool dall'agente finanziere")
 
 
