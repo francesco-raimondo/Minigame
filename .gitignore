@@ -1,0 +1,6 @@
+# Variabili d'ambiente e segreti
+.env
+
+# Cache Python
+__pycache__/
+*.pyc
