@@ -1,31 +1,33 @@
 from GameState import GameState
-from Agents.AgenteFinanziere import AgenteFinanziere
+from Agents.FinancierAgent import FinancierAgent
 
 game = GameState()
-sterling = AgenteFinanziere()
+sterling = FinancierAgent()
 
 for i in range (1,6):
     game.show_dashboard()
-    pitch = input("Inserisci il tuo pitch per la startup: ")
-    print("Mr. Sterling sta valutando...")
-    feedback = sterling.valuta_pitch(pitch, game)
-    print("\n" + "=" * 50)
-    print("Feedback di Mr. Sterling:")
-    print(f"Esito: {'APPROVATO' if feedback['voto_favorevole'] else 'BOCCIATO'}")
-    print(f"Mr. Sterling: \"{feedback['motivazione']}\"")
-
-    
-    game.stampa_modifiche_parametri(feedback['delta_budget'], feedback['delta_fiducia'], feedback['delta_scandalo'])
-
-    # update dello stato del gioco prima del prossimo turno
-    game.aggiorna_stato(feedback['delta_budget'], feedback['delta_fiducia'], feedback['delta_scandalo'])
-    
-
-
-
-    # verifica se il gioco è finito
-    risultato = game.verifica_fine_partita()
-    if risultato:
-        print(f"\nGAME OVER: {risultato}")
+     # check if the game is over
+    result = game.check_game_over()
+    if result:
+        print(f"\nGAME OVER: {result}")
         break
 
+    pitch = input("Enter your startup pitch: ")
+    print("Mr. Sterling is evaluating...")
+    feedback = sterling.evaluate_pitch(pitch, game)
+    print("\n" + "=" * 50)
+    print("Mr. Sterling's Feedback:")
+    print(f"Outcome: {'APPROVED' if feedback['favorable_vote'] else 'REJECTED'}")
+    print(f"Mr. Sterling: \"{feedback['motivation']}\"")
+
+    
+    game.print_parameter_changes(feedback['delta_budget'], feedback['delta_trust'], feedback['delta_scandal'])
+
+    # update game state before the next turn
+    game.update_state(feedback['delta_budget'], feedback['delta_trust'], feedback['delta_scandal'])
+    
+
+
+
+
+   

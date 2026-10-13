@@ -1,64 +1,67 @@
 class GameState:
     def __init__(self):
-        self.budget_ottenuto = 0  
-        self.budget_obiettivo = 100000
-        self.fiducia_board = 50  
-        self.indice_scandalo = 0  
-        self.turno = 1  
-        self.max_turni = 5
+        self.budget_raised = 0  
+        self.budget_goal = 100000
+        self.board_trust = 50  
+        self.scandal_index = 0  
+        self.turn = 1  
+        self.max_turns = 5
 
     def show_dashboard(self):
-        """Stampa a schermo lo stato attuale della startup in modo visivo."""
+        """Prints the current startup status to the screen in a visual way."""
         print("\n" + "=" * 50)
-        print(f" 📊 STATUS BOARD — TURNO {self.turno} / {self.max_turni}")
+        print(f" 📊 STATUS BOARD — TURN {self.turn} / {self.max_turns}")
         print("=" * 50)
         print(
-            f" 💰 Budget Raccolto:   €{self.budget_ottenuto:,} /"
-            f" €{self.budget_obiettivo:,}"
+            f" 💰 Budget Raised:   €{self.budget_raised:,} /"
+            f" €{self.budget_goal:,}"
         )
-        print(f" 🤝 Fiducia del Board:  {self.fiducia_board}%")
-        print(f" 🚨 Indice Scandalo:    {self.indice_scandalo}%")
+        print(f" 🤝 Board Trust:  {self.board_trust}%")
+        print(f" 🚨 Scandal Index:    {self.scandal_index}%")
         print("=" * 50 + "\n")
         
 
-    def aggiorna_stato(self, delta_budget=0, delta_fiducia=0, delta_scandalo=0):
-        """Aggiorna le metriche di gioco applicando i delta (positivi o negativi)."""
-        self.budget_ottenuto += delta_budget
+    def update_state(self, delta_budget=0, delta_trust=0, delta_scandal=0):
+        """Updates the game metrics by applying the deltas (positive or negative)."""
+        self.budget_raised += delta_budget
 
-        self.fiducia_board+=delta_fiducia
-        if self.fiducia_board > 100:
-            self.fiducia_board=100
+        self.board_trust+=delta_trust
+        if self.board_trust > 100:
+            self.board_trust=100
 
-        self.indice_scandalo+=delta_scandalo
-        if self.indice_scandalo > 100:
-            self.indice_scandalo=100
+        if self.board_trust < 0:
+            self.board_trust=0
 
-        self.turno += 1
+        self.scandal_index+=delta_scandal
+        if self.scandal_index > 100:
+            self.scandal_index=100
 
-    def stampa_modifiche_parametri(self, delta_budget, delta_fiducia, delta_scandalo):
+        self.turn += 1
+
+    def print_parameter_changes(self, delta_budget, delta_trust, delta_scandal):
         print("=" * 50)
-        print(f"Soldi investiti dall'agente: {delta_budget}")
-        print(f"{'Bonus di fiduca: +' if delta_fiducia>0 else 'Penalità di fiduca:'} {delta_fiducia}%")
-        print(f"{'Aumento indice di scandalo: +' if delta_scandalo>0 else 'Riduzione indice di scandalo:'} {abs(delta_scandalo)}%")
+        print(f"Funds invested by the agent: {delta_budget}")
+        print(f"{'Trust bonus: +' if delta_trust>0 else 'Trust penalty:'} {delta_trust}%")
+        print(f"{'Scandal index increase: +' if delta_scandal>0 else 'Scandal index reduction:'} {abs(delta_scandal)}%")
         print("=" * 50)
         return None
 
-    def verifica_fine_partita(self):
-        """Controlla se il gioco è finito (Vittoria o Sconfitta).
+    def check_game_over(self):
+        """Checks if the game is over (Victory or Defeat).
 
-        Restituisce: - 'VITTORIA' - 'SCONFITTA' - None (il gioco continua)
+        Returns: - 'VICTORY' - 'DEFEAT' - None (game continues)
         """
-        if self.budget_ottenuto >= self.budget_obiettivo:
-            return "VITTORIA"
+        if self.budget_raised >= self.budget_goal:
+            return "VICTORY"
 
-        if self.fiducia_board <= 0:
-            return "SCONFITTA_FIDUCIA"
+        if self.board_trust <= 0:
+            return "DEFEAT_TRUST"
 
-        if self.indice_scandalo >= 100:
-            return "SCONFITTA_SCANDALO"
+        if self.scandal_index >= 100:
+            return "DEFEAT_SCANDAL"
 
-        if self.turno > self.max_turni:
-            return "SCONFITTA_TURNI"
+        if self.turn > self.max_turns:
+            return "DEFEAT_TURNS"
 
         return None
 
