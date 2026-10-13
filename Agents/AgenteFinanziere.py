@@ -1,10 +1,20 @@
 from openai import OpenAI
 import json
 from Tools.agente_finanziere_tools import agente_finanziere_tools
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # carica automaticamente .env dalla root del progetto
+BASE_URL = os.getenv("BASE_URL")
+API_KEY  = os.getenv("API_KEY")
+MODEL    = os.getenv("MODEL")
+
+
+
 
 class AgenteFinanziere:
-    def __init__(self, base_url="http://192.168.1.100:1234/v1", model_name="qwen/qwen3-4b-2507"):
-        self.client = OpenAI(base_url=base_url, api_key="not-needed")
+    def __init__(self, base_url=BASE_URL, model_name=MODEL, api_key=API_KEY):
+        self.client = OpenAI(base_url=base_url, api_key=api_key)
         self.model_name = model_name
         self.system_prompt = ("Sei Mr. Sterling, un membro del consiglio d'amministrazione di una startup,"
         " investitore spietato e cinico. Ti interessano solo i dati finanziari,"
@@ -47,7 +57,6 @@ class AgenteFinanziere:
             if name_function == "gestisci_decisione_board":
                 # Convertiamo gli argomenti JSON restituiti dalla LLM in un dizionario Python
                 arguments = json.loads(tool_call.function.arguments)
-                print("DEBUG : ", arguments)
                 return arguments
 
         else:
