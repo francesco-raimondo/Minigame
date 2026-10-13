@@ -14,15 +14,12 @@ for i in range (1,6):
     print(f"Esito: {'APPROVATO' if feedback['voto_favorevole'] else 'BOCCIATO'}")
     print(f"Mr. Sterling: \"{feedback['motivazione']}\"")
 
+    
+    game.stampa_modifiche_parametri(feedback['delta_budget'], feedback['delta_fiducia'], feedback['delta_scandalo'])
+
     # update dello stato del gioco prima del prossimo turno
     game.aggiorna_stato(feedback['delta_budget'], feedback['delta_fiducia'], feedback['delta_scandalo'])
     
-    print("=" * 50)
-    print(f"Soldi investiti dall'agente: {feedback['delta_budget']}")
-    print(f"{'Bonus di fiduca: +' if feedback['delta_fiducia']>0 else 'Penalità di fiduca:'} {feedback['delta_fiducia']}%")
-    print(f"{'Aumento indice di scandalo: +' if feedback['delta_scandalo']>0 else 'Riduzione indice di scandalo:'} {abs(feedback['delta_scandalo'])}%")
-    print("=" * 50)
-
 
 
 

@@ -35,6 +35,14 @@ class GameState:
 
         self.turno += 1
 
+    def stampa_modifiche_parametri(self, delta_budget, delta_fiducia, delta_scandalo):
+        print("=" * 50)
+        print(f"Soldi investiti dall'agente: {delta_budget}")
+        print(f"{'Bonus di fiduca: +' if delta_fiducia>0 else 'Penalità di fiduca:'} {delta_fiducia}%")
+        print(f"{'Aumento indice di scandalo: +' if delta_scandalo>0 else 'Riduzione indice di scandalo:'} {abs(delta_scandalo)}%")
+        print("=" * 50)
+        return None
+
     def verifica_fine_partita(self):
         """Controlla se il gioco è finito (Vittoria o Sconfitta).
 
