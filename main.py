@@ -6,12 +6,7 @@ sterling = FinancierAgent()
 
 for i in range (1,6):
     game.show_dashboard()
-     # check if the game is over
-    result = game.check_game_over()
-    if result:
-        print(f"\nGAME OVER: {result}")
-        break
-
+    
     pitch = input("Enter your startup pitch: ")
     print("Mr. Sterling is evaluating...")
     feedback = sterling.evaluate_pitch(pitch, game)
@@ -26,6 +21,11 @@ for i in range (1,6):
     # update game state before the next turn
     game.update_state(feedback['delta_budget'], feedback['delta_trust'], feedback['delta_scandal'])
     
+    # check if the game is over
+    result = game.check_game_over()
+    if result:
+        print(f"\nGAME OVER: {result}")
+        break
 
 
 
