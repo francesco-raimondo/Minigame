@@ -33,7 +33,7 @@ class FinancierAgent:
             f"- Budget raised so far: €{game_state.budget_raised}/€{game_state.budget_goal}\n"
             f"- Board trust: {game_state.board_trust}%\n"
             f"- Turn: {game_state.turn}/{game_state.max_turns}\n\n"
-            f"Here is my proposal:\n\"{user_pitch}\""
+            f"Here is the user's proposal:\n\"{user_pitch}\""
         ) 
 
         # Call to the client passing the tools imported from the external file

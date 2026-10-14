@@ -1,8 +1,10 @@
 from GameState import GameState
 from Agents.FinancierAgent import FinancierAgent
+from Agents.MarketingAgent import MarketingAgent
 
 game = GameState()
 sterling = FinancierAgent()
+#victoria = MarketingAgent()
 
 for i in range (1,6):
     game.show_dashboard()
@@ -10,6 +12,8 @@ for i in range (1,6):
     pitch = input("Enter your startup pitch: ")
     print("Mr. Sterling is evaluating...")
     feedback = sterling.evaluate_pitch(pitch, game)
+    
+    
     print("\n" + "=" * 50)
     print("Mr. Sterling's Feedback:")
     print(f"Outcome: {'APPROVED' if feedback['favorable_vote'] else 'REJECTED'}")
